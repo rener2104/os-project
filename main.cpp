@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include "auth.h"
 using namespace std;
 
 int main() {
@@ -8,6 +9,11 @@ int main() {
   cout << "..." << endl;
   sleep(1);
   cout << "..." << endl;
+
+  authenticateUser();
+
+
+  return 0;
 
 
 
