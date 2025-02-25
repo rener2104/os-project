@@ -37,7 +37,17 @@ This program is a simulation of an operating system using C++.
    ```
    
 ## Documentation
-1. Open documentation:
+0. Incase doxygen isn't installed
+   ```bash
+   $ brew install doxygen
+   ```
+
+1. To generate the documentation, ensure you have Doxygen installed and run:
+   ```bash
+   $ doxygen Doxyfile # Generated documentation will be in docs/
+   ```
+
+2. Open documentation:
    ```bash
    $ open docs/html/index.html # macOS
    ```
