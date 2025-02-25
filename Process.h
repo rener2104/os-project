@@ -27,13 +27,11 @@ private:
     int priority;
     std::string ioOperations;
 
-    // Private Constructor for more controlled creation
-    Process(int pid, int arrivalTime, int burstTime, int memoryRequired, int priority = 0, const std::string& ioOperations = "");
+    // Private Constructor
+    Process(int pid, int arrivalTime, int burstTime, int memoryRequired, int priority, const std::string& ioOperations);
 
 public:
-    ~Process();
-
-    // Static factory method for creating Processes
+    // Public Constructor
     static Process CreateProcess(int pid, int arrivalTime, int burstTime, int memoryRequired, int priority = 0, const std::string& ioOperations = "");
 
     // Getters
@@ -50,7 +48,7 @@ public:
 
     // Setters
     void SetPriority(int priority);
-    void SetIoOperations(std::string& ioOperations);
+    void SetIoOperations(const std::string& ioOperations);
 
     // Method to update the state based on the provided statusID
     void UpdateState(int statusID);
