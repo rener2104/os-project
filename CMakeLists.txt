@@ -3,4 +3,6 @@ project(OS)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(OS main.cpp auth.cpp)
+add_executable(OS main.cpp auth.cpp
+        Process.cpp
+        Process.h)
