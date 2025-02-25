@@ -16,7 +16,7 @@ private:
         TERMINATED
     };
 
-    std::string pid;
+    int pid;
     int arrivalTime;
     int burstTime;
     std::string state;
@@ -24,38 +24,45 @@ private:
     int waitingTime;
     int turnaroundTime;
     int memoryRequired;
-    int priority = 0;
-    char* ioOperations = {};
+    int priority;
+    std::string ioOperations;
 
-    // Constructor
-    Process(std::string pid, int arrivalTime, int burstTime,
-            std::string state, int remainingTime, int waitingTime,
-            int turnaroundTime, int memoryRequired, int priority = 0, char* ioOperations = {});
-
-    // Method that moves between the valid StatusIDs
-    void UpdateState(int statusID);
-
-    // Method to decrement remaining execution time when process is scheduled
-    int ReduceExecutionTime();
+    // Private Constructor for more controlled creation
+    Process(int pid, int arrivalTime, int burstTime, int memoryRequired, int priority = 0, const std::string& ioOperations = "");
 
 public:
-    // getters
-    std::string GetPID();
-    int GetArrivalTime();
-    int GetBurstTime();
-    std::string GetState();
-    int GetRemainingTime();
-    int GetWaitingTime();
-    int GetTurnaroundTime();
-    int GetMemoryRequired();
-    int GetPriority();
-    char* GetIoOperations();
+    ~Process();
 
-    // setters
+    // Static factory method for creating Processes
+    static Process CreateProcess(int pid, int arrivalTime, int burstTime, int memoryRequired, int priority = 0, const std::string& ioOperations = "");
+
+    // Getters
+    int GetPID() const;
+    int GetArrivalTime() const;
+    int GetBurstTime() const;
+    std::string GetState() const;
+    int GetRemainingTime() const;
+    int GetWaitingTime() const;
+    int GetTurnaroundTime() const;
+    int GetMemoryRequired() const;
+    int GetPriority() const;
+    std::string GetIoOperations() const;
+
+    // Setters
     void SetPriority(int priority);
-    void SetIoOperations(char* ioOperations);
+    void SetIoOperations(std::string& ioOperations);
+
+    // Method to update the state based on the provided statusID
+    void UpdateState(int statusID);
+
+    // Method to reduce remaining execution time when the process is scheduled
+    void ReduceExecutionTime(int time);
+
+    // Method to update waiting time
+    void UpdateWaitingTime(int timeElapsed);
+
+    // Method to update turnaround time
+    void UpdateTurnaroundTime(int burstTime);
 };
-
-
 
 #endif //PROCESS_H
