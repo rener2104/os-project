@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "auth.h"
 #include "Process.h"
+#include "scheduler.h"
 
 using namespace std;
 
@@ -14,7 +15,8 @@ int main() {
 
     authenticateUser();
 
-    // Process creation
+    Scheduler scheduler;
+
     cout << "\nProcess Creation Tests:" << endl;
     Process proc1 = Process::CreateProcess(1, 0, 10, 100, 3, "Disk, Network");
     cout << "Test 1:" << endl;
@@ -45,6 +47,17 @@ int main() {
     cout << "PID: " << proc5.GetPID() << ", Arrival Time: " << proc5.GetArrivalTime()
               << ", Burst Time: " << proc5.GetBurstTime() << ", Memory Required: " << proc5.GetMemoryRequired()
               << ", Priority: " << proc5.GetPriority() << ", IO Operations: " << proc5.GetIoOperations() << endl;
+
+    vector<Process> processes = { proc1, proc2, proc3, proc4, proc5 };
+
+    cout << "\nRunning FCFS Scheduling:" << endl;
+    scheduler.FCFS(processes);
+
+    cout << "\nRunning SJF Scheduling (Non-preemptive):" << endl;
+    scheduler.SJF(processes, false);
+
+    cout << "\nRunning SJF Scheduling (Preemptive):" << endl;
+    scheduler.SJF(processes, true);
 
     return 0;
 }
