@@ -7,4 +7,6 @@ add_executable(OS main.cpp auth.cpp
         Process.cpp
         Process.h
         scheduler.cpp
-        scheduler.h)
+        scheduler.h
+        VirtualMemory.cpp
+        VirtualMemory.h)

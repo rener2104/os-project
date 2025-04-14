@@ -6,6 +6,7 @@
 #define PROCESS_H
 
 #include <iostream>
+#include "VirtualMemory.h"
 
 /**
  * @brief Process Class
@@ -42,6 +43,7 @@ private:
     int memoryRequired;     ///< Memory required by the process
     int priority;           ///< Priority level of the process
     std::string ioOperations; ///< List of I/O operations required
+    std::vector<PageTableEntry> pageTable; ///< Page table for virtual memory management
 
     /**
      * @brief Private constructor for Process class
@@ -66,7 +68,7 @@ public:
      * @param ioOperations I/O operations needed (default: empty)
      * @return Process New process instance
      */
-    static Process CreateProcess(int pid, int arrivalTime, int burstTime, 
+    static Process NewProcess(int pid, int arrivalTime, int burstTime, 
                                int memoryRequired, int priority = 0, 
                                const std::string& ioOperations = "");
 
@@ -110,6 +112,13 @@ public:
      * @param burstTime Total CPU time taken
      */
     void UpdateTurnaroundTime(int burstTime);
+
+    /**
+     * @brief Allocates a frame in physical memory for the process
+     * @return Frame number allocated
+     * @throws std::runtime_error if no free frames are available
+     */
+    int TranslateAddress(int virtualAddress);
 };
 
 #endif //PROCESS_H

@@ -11,10 +11,11 @@ Process::Process(int pid, int arrivalTime, int burstTime, int memoryRequired, in
     : pid(pid), arrivalTime(arrivalTime), burstTime(burstTime), remainingTime(burstTime),
       waitingTime(0), turnaroundTime(0), memoryRequired(memoryRequired), priority(priority), ioOperations(ioOperations) {
     state = "READY";
+    pageTable.resize(VirtualMemory::NUM_PAGES);
 }
 
 // Public Constructor
-Process Process::CreateProcess(int pid, int arrivalTime, int burstTime, int memoryRequired,
+Process Process::NewProcess(int pid, int arrivalTime, int burstTime, int memoryRequired,
                                 int priority, const std::string& ioOperations) {
     return Process(pid, arrivalTime, burstTime, memoryRequired, priority, ioOperations);
 }
@@ -109,5 +110,25 @@ void Process::UpdateWaitingTime(int timeElapsed) {
 // Method to update turnaround time
 void Process::UpdateTurnaroundTime(int burstTime) {
     turnaroundTime = waitingTime + burstTime;
+}
+
+// Method to translate a virtual address to a physical address
+int Process::TranslateAddress(int virtualAddress) {
+    int pageNumber = virtualAddress / VirtualMemory::PAGE_SIZE;
+    int offset = virtualAddress % VirtualMemory::PAGE_SIZE;
+
+    if (pageNumber >= VirtualMemory::NUM_PAGES)
+        throw std::out_of_range("Invalid virtual address");
+
+    PageTableEntry& entry = pageTable[pageNumber];
+
+    if (!entry.valid) {
+        entry.frameNumber = VirtualMemory::allocateFrame();
+        entry.valid = true;
+        std::cout << "[Page Fault] Loaded virtual page " << pageNumber << " into frame " << entry.frameNumber << std::endl;
+    }
+
+    int physicalAddress = entry.frameNumber * VirtualMemory::PAGE_SIZE + offset;
+    return physicalAddress;
 }
 
